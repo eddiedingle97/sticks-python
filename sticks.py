@@ -56,7 +56,7 @@ class Mat(tk.Frame):
             self.frame.create_line(x1, y1, x2, y2)
             if(isIntersecting(x1, x2)):
                 count += 1
-        result = 2 * 14 * amount
+        result = 2 * 28 * amount
         result /= 32 * count
         print(str(result))
 
@@ -65,9 +65,14 @@ class Mat(tk.Frame):
             self.frame.create_line(i, 0 , i, 512)
 
 def isIntersecting(x1, x2):
-    for i in range(x1, x2):
-        if(i % 32 == 0):
-            return True
+    if(x1 < x2):
+        for i in range(x1, x2):
+            if(i % 32 == 0):
+                return True
+    else:
+        for i in range(x2, x1):
+            if(i % 32 == 0):
+                return True
 
 root = tk.Tk()
 app = Dialog(master=root)
