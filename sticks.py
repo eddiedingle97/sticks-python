@@ -4,6 +4,13 @@ import math
 
 global amount
 amount = 0
+sticklength = 28
+halflength = sticklength // 2
+linedistance = 48
+X = 1024
+Y = 1024
+leftbound = 16
+rightbound = 1008
 random.seed()
 
 class Dialog(tk.Frame):
@@ -39,7 +46,7 @@ class Mat(tk.Frame):
         self.draw()
 
     def createFrame(self):
-        self.frame = tk.Canvas(self.master, width=512, height=512)
+        self.frame = tk.Canvas(self.master, width=X, height=Y)
         self.frame.pack()
 
     def draw(self):
@@ -47,22 +54,22 @@ class Mat(tk.Frame):
         count = 0
         for i in range(amount):
             angle = random.uniform(2,0) * math.pi
-            x = random.randint(32, 480)
-            y = random.randint(32, 480)
-            x1 = x + round(math.cos(angle) * 14)
-            x2 = x - round(math.cos(angle) * 14)
-            y1 = y + round(math.sin(angle) * 14)
-            y2 = y - round(math.sin(angle) * 14)
+            x = random.randint(leftbound, rightbound)
+            y = random.randint(leftbound, rightbound)
+            x1 = x + round(math.cos(angle) * halflength)
+            x2 = x - round(math.cos(angle) * halflength)
+            y1 = y + round(math.sin(angle) * halflength)
+            y2 = y - round(math.sin(angle) * halflength)
             self.frame.create_line(x1, y1, x2, y2)
             if(isIntersecting(x1, x2)):
                 count += 1
-        result = 2 * 28 * amount
+        result = 2 * sticklength * amount
         result /= 32 * count
         print(str(result))
 
     def drawLines(self):
-        for i in range(16, 512, 32): 
-            self.frame.create_line(i, 0 , i, 512)
+        for i in range(linedistance // 2, X, linedistance): 
+            self.frame.create_line(i, 0 , i, Y)
 
 def isIntersecting(x1, x2):
     if(x1 < x2):
@@ -73,6 +80,7 @@ def isIntersecting(x1, x2):
         for i in range(x2, x1):
             if(i % 32 == 0):
                 return True
+    return False
 
 root = tk.Tk()
 app = Dialog(master=root)
